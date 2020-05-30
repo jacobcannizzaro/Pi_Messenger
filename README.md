@@ -1,5 +1,7 @@
 # Pi_Messenger
 
+## Readme is out of date as of May 30 @ 6:30 PM, Ask jake before continuing to avoid confusion
+
 ### Setting up our first example:
 
 Follow this for video walkthrough: https://www.youtube.com/watch?v=Q-UujfueMZ8
