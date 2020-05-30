@@ -1,30 +1,41 @@
 # Pi_Messenger
 
-## Readme is out of date as of May 30 @ 6:30 PM, Ask jake before continuing to avoid confusion
+## 
 
-### Setting up our first example:
+### Setting up:
 
-Follow this for video walkthrough: https://www.youtube.com/watch?v=Q-UujfueMZ8
+1. Create a directory for this project, for reference I call outer directory `pi-mess`
 
-Follow this link for the detailed steps that goes along with the video: https://www.apdaga.com/2018/02/install-aws-amazon-sdk-on-raspberry-pi.html
+2. Clone this repo into directly into `pi-mess`
 
-1. Ask Jake to download your device package for you. You will get a file: `connect_device_package.zip`
+3. 
 
-2. Unzip downloaded file:
+4. Ask Jake to download your device package for you. You will get a file: `connect_device_package.zip`
+
+5. Unzip downloaded file:
 
    `$ unzip connect_device_package.zip`
 
-3. You should now have four files:
+6. You should now have four files:
 
    1. `<thing-name>.cert.pem`
    2. `<thing-name>.private.key`
    3. `<thing-name>.public.key`
    4. `start.sh`
 
-   Put these four files in one folder `connect_device_package/`
-   (Note: NEVER upload your .pem or .key files to a public git repo!!! This is why these files are not present in this repo)
+   Put these four files in one folder `connect_device_package/` and place this folder directly into `pi-mess` as well so that your directory structure looks like:
+
+   ```
+   pi-mess/
+   	|____Pi_Messenger/
+   	|____connect_device_package/
+   ```
+
    
-4. Check for / download dependencies and libraries needed:
+
+   (Note: NEVER upload your .pem or .key files to a public git repo!!! This is why these files are not present in this repo and the reasoning behind the directory structure given above)
+
+7. Check for / download dependencies and libraries needed:
 
    ```
    $ openssl version
@@ -37,7 +48,7 @@ Follow this link for the detailed steps that goes along with the video: https://
 
    Note: python and openssl should already be installed on the Raspberry-Pi 4 model b. This step is just making sure of that. These libraries do work with Python 2.7 but this project is using Python 3. Pip is a package installer  for python libraries, and if say for instance pip installing paho-mqtt appears to work but then when you run your python3 instance and import it, the compiler says it cannot find the library, then try installing again using `sudo pip3 install...`
 
-5. Go to `connect_device_package/` directory and run following commands:
+8. Go to (cd into) `connect_device_package/` directory and run following commands:
 
    ```
    $ pip install AWSIoTPythonSDK
@@ -47,14 +58,7 @@ Follow this link for the detailed steps that goes along with the video: https://
 
    This downloads an AWS python SDK, gives execute permissions to the `start.sh` file, and then runs that file. Running `start.sh` will populate your directory with a `root-CA.crt` certificate file.
 
-6. Download `aws_iot_pub.py` & `aws_iot_sub.py` from this repository and then allow execute permissions for them:
-
-   ```
-   $ chmod +x aws_iot_sub.py
-   $ chmod +x aws_iot_pub.py
-   ```
-
-7. If you tried to run these files now, you will get an error because the AWS policy for your "thing/device" has not been set up. It's default configuration only allows subscriptions to the AWS test broker during the test that is run after configuration in the `start.sh` file. Change your devices policy (force Jake to change it) to: 
+9. Before running anything, let's set up your thing-policy. It's default configuration only allows subscriptions to the AWS test broker during the test that is run after configuration in the `start.sh` file. Change your devices policy (force Jake to change it) to: 
 
    ```
    {
@@ -76,16 +80,37 @@ Follow this link for the detailed steps that goes along with the video: https://
    }
    ```
 
-   This will allow the publisher to publish to and the subscriber to subscribe to the channels used in `aws_iot_sub/pub.py`
+   This will allow the publishing and subscribing to the channels used in `chat.py`
 
-8. Before using these programs, you must go into both files and replace every instance of `jakemacbook` with whatever your devices name is.
+10. Now everything should be set up in your directory and on AWS's side of things (AWS is playing the role of the Broker), so let's run the installation script:
 
-9. To see this example in action, open two terminal windows. In the first, run:
+    Begin by changing into the `Pi-Messanger/src/` directory and then run
 
-   `python3 aws_iot_sub.py`
+    ```
+    $ python3 install.py
+    ```
 
-   In the second window, run:
+    This will prompt you to enter three things, your thing-name, host endpoint (broker address), and a pathname to your `connect_device_package/` directory. The output will appear as follows:
 
-   `python3 aws_iot_pub.py`
+    ```
+    Enter your thing-name (as registered on AWS): jakepi
+    Enter the AWS Broker endpoint: a1wrobr8i9l833-ats.iot.us-east-1.amazonaws.com
+    Enter the pathname to <.../>connect_device_package/: ../../
+    Done installing, run this script anytime to update connection credentials!
+    ```
 
-10. You should now see temperature messages flowing from the publisher to the broker and getting recieved by the subscriber. Good luck! Feel free to open issues in the repo if you are unclear about any aspect of this.
+    Note: You must change "jakepi" to whatever your thing-name is. If you've followed these instructions correctly thusfar, the pathname will be the same as well, and the broker endpoint is the same for all of us. As the script states, if you mess up entering this information you can simply re-run the install script.
+
+11. Now you are ready to chat! 
+
+    From within the same (`src/`) directory, you can now run:
+
+    ```
+    $ python3 chat.py
+    ```
+
+    As long as someone else is chatting you are now ready for a dandy ol' time.
+
+    Otherwise it's like shouting into a valley with no echoes :(
+
+    Have fun.
