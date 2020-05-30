@@ -101,6 +101,9 @@
 
     Note: You must change "jakepi" to whatever your thing-name is. If you've followed these instructions correctly thusfar, the pathname will be the same as well, and the broker endpoint is the same for all of us. As the script states, if you mess up entering this information you can simply re-run the install script.
 
+    This will add `connection.pkl` to your src directory.
+    This is necessary as it holds your connection information.
+
 11. Now you are ready to chat! 
 
     From within the same (`src/`) directory, you can now run:
