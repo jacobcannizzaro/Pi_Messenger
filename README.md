@@ -20,7 +20,7 @@ Follow this link for the detailed steps that goes along with the video: https://
    4. 'start.sh'
 
    Put these four files in one folder 'connect_device_package/'
-
+   (Note: NEVER upload your .pem or .key files to a public git repo!!!)
 4. Check for / download dependencies and libraries needed:
 
    ```
