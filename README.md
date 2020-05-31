@@ -42,7 +42,7 @@
    OpenSSL 1.1.0f  25 May 2017
    $ python3 --version
    Python 3.7.7
-   $ sudo pip install paho-mqtt
+   $ sudo pip3 install paho-mqtt
    $ sudo  apt-get update
    ```
 
@@ -58,7 +58,7 @@
 
    This downloads an AWS python SDK, gives execute permissions to the `start.sh` file, and then runs that file. Running `start.sh` will populate your directory with a `root-CA.crt` certificate file.
 
-9. Before running anything, let's set up your thing-policy. It's default configuration only allows subscriptions to the AWS test broker during the test that is run after configuration in the `start.sh` file. Change your devices policy (force Jake to change it) to: 
+9. Before running any python files, let's set up your thing-policy. It's default configuration only allows subscriptions to the AWS test broker during the test that is run after configuration in the `start.sh` file. Change your devices policy (force Jake to change it) to: 
 
    ```
    {
