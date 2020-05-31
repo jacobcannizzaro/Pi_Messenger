@@ -90,6 +90,8 @@
     $ python3 install.py
     ```
 
+    Note: I did not have to install the python library `pickle` on my Pi, but if there is an error relating to this that arises when running this script, then try `pip install pickle-mixin` or `pip3 install pickle-mixin` if that doesn't work. May need to run with root priviledge (i.e. add `sudo` at the beginning).
+
     This will prompt you to enter three things, your thing-name, host endpoint (broker address), and a pathname to your `connect_device_package/` directory. The output will appear as follows:
 
     ```
