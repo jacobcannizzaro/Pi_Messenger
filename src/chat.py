@@ -5,8 +5,24 @@ import ssl
 from time import sleep
 import threading
 import pickle
+from Crypto.Cipher import AES
 
 connflag = False
+
+keyaccepted = 1
+key = "0123456789123456"
+
+while keyaccepted == 0:
+    key = input("Enter a session key: ")
+    if(len(key) == 16 or len(key) == 24 or len(key) == 32 ):
+        keyaccepted = 1
+    else:
+        print("key must be 16, 24, or 32 characters exactly. Try again")
+
+
+ciphE = AES.new(key, AES.MODE_CFB, "s7a6sTM58ZBLiNpR")
+ciphD = AES.new(key, AES.MODE_CFB, "s7a6sTM58ZBLiNpR")
+
 
 def on_connect(client, userdata, flags, rc):
     global connflag
@@ -20,8 +36,10 @@ def on_message(client, userdata, message):
     global puptop
     global msg
     if str(message.topic) != pubtop:
-        recvmsg = str(message.payload.decode("utf-8"))
-        print(str(message.topic), ": ", recvmsg, "\n\n> ", end = '')
+        recvmsgEncrypted = message.payload
+        # ciphD = AES.new(key, AES.MODE_CFB, "s7a6sTM58ZBLiNpR")
+        recvmsg = ciphD.decrypt(recvmsgEncrypted)
+        print(str(message.topic), ": ", recvmsg.decode('utf-8'), "\n\n> ", end = '')
         # if recvmsg == "STOP":
         #     print("client " + str(message.topic) + " has left")
         # chat = input("Enter Message: ")
@@ -46,8 +64,12 @@ def pubThread():
     while 1==1:
         # sleep(5)
         if connflag == True:
-            client.publish(pubtop, input("> "))
-            print()
+            m = input("> ")
+            print(type(m))
+            ciphertext = ciphE.encrypt(m)
+            print(type(ciphertext))
+            client.publish(pubtop, ciphertext)
+            # print()
             # tempreading = uniform(20.0,25.0)                        # Generating Temperature Readings
             # mqttc.publish("temperature", tempreading, qos=1)        # topic: temperature # Publishing Temperature values
             # print("msg sent: temperature " + "%.2f" % tempreading ) # Print sent temperature msg on console
