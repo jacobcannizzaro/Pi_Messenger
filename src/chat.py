@@ -9,8 +9,8 @@ from Crypto.Cipher import AES
 
 connflag = False
 
-keyaccepted = 1
-key = "0123456789123456"
+keyaccepted = 0
+key = ""
 
 while keyaccepted == 0:
     key = input("Enter a session key: ")
