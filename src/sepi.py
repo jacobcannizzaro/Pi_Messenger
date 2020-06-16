@@ -18,24 +18,24 @@ def init(win):
     win.title("SEPI Messenger")
     win.minsize(400,500)
     e.place(bordermode=INSIDE, height=25, width=425, x=0, y=475)
-    btn.place(bordermode=INSIDE, height=25, width=50, x=350, y=475)
     btn2.place(bordermode=INSIDE, height=25, width=50, x=350, y=450)
+    messages.pack()
 
 
 # button callback     
-def send():
+def Enter_pressed(event):
     global client
     sent = e.get()
-
+    input_user.set('')
     if connflag == True:
             client.publish(pubtop, sent)        
     else:
-        msg = Message(win, text="waiting for connection...", width=400)
-        msg.pack()
+        messages.insert(INSERT, '%s\n' % sent)
 
     
-    msg = Message(win, text=sent, width=400)
-    msg.pack()
+    #msg = Message(messages, text=sent, width=400)
+    #msg.pack()
+    messages.insert(INSERT, '%s\n' % sent)
 
 
 
@@ -43,8 +43,7 @@ def send():
 def on_connect(client, userdata, flags, rc):
     global connflag
     global msg
-    msg = Message(win, text="Connected to AWS", width=400)
-    msg.pack()
+    messages.insert(INSERT, "Connected to AWS\n")
     # msg2 = Message(win, text="Connected to AWS")
     # print("Connected to AWS")
     connflag = True
@@ -57,8 +56,7 @@ def on_message(client, userdata, message):
     if str(message.topic) != pubtop:
         recvmsg = str(message.payload.decode("utf-8"))
         sender_message = str(message.topic) + ": " + recvmsg + "\n\n"
-        msg = Message(win, text=sender_message, width=400)
-        msg.pack()
+        messages.insert(INSERT, '%s\n' % sender_message)
         # print(str(message.topic), ": ", recvmsg, "\n\n> ", end = '')
         
 
@@ -125,7 +123,10 @@ def subThread():
 
 
 win = Tk()
-e = Entry(win)
+input_user = StringVar()
+e = Entry(win,text=input_user)
+e.bind("<Return>", Enter_pressed)
+messages = Text(win) 
  
 # Gets the requested values of the height and widht.
 windowWidth = win.winfo_reqwidth()
@@ -139,7 +140,6 @@ positionDown = int(win.winfo_screenheight()/2 - windowHeight/2)
 win.geometry("+{}+{}".format(positionRight, positionDown))
  
 # create a button
-btn = Button(win, text="Send", command=send)
 
 btn2 = Button(win, text="Connect", command=subThread)
  
