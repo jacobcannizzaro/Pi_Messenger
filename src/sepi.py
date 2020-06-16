@@ -7,11 +7,14 @@ import threading
 import pickle
 from tkinter import *
 from tkinter import messagebox
+from Crypto.Cipher import AES
 
 connflag = False
 pubtop = ""
 subtop = ""
 client = paho.Client()
+
+key = "1234123412341234"
 
 # initialise main window
 def init(win):
@@ -28,7 +31,9 @@ def Enter_pressed(event):
     sent = e.get()
     input_user.set('')
     if connflag == True:
-            client.publish(pubtop, sent)        
+        obj = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
+        ciphertext = obj.encrypt(sent)
+        client.publish(pubtop, ciphertext)        
     else:
         messages.insert(INSERT, '%s\n' % sent)
 
@@ -54,8 +59,11 @@ def on_message(client, userdata, message):
     global puptop
     global msg
     if str(message.topic) != pubtop:
-        recvmsg = str(message.payload.decode("utf-8"))
-        sender_message = str(message.topic) + ": " + recvmsg + "\n\n"
+        obj2 = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
+        # recvmsg = str(message.payload.decode("utf-8"))
+        recvmsgEncrypted = message.payload
+        m = obj2.decrypt(recvmsgEncrypted)
+        sender_message = str(message.topic) + ": " + m.decode('utf-8') + "\n\n"
         messages.insert(INSERT, '%s\n' % sender_message)
         # print(str(message.topic), ": ", recvmsg, "\n\n> ", end = '')
         
