@@ -32,8 +32,7 @@ def on_message(client, userdata, message):
         obj2 = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
         recvmsgEncrypted = message.payload
         m = obj2.decrypt(recvmsgEncrypted)
-        f = str(m)
-        print(str(message.topic), ": ", f, "\n> ", end = '')
+        print(str(message.topic), ": ", m.decode('utf-8'), "\n> ", end = '')
 
 def on_subscribe(client, userdata, mid, granted_qos):
     print("Subscribed:", str(mid), str(grant))
