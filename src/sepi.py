@@ -210,7 +210,7 @@ scrollbar=Scrollbar(win)
 scrollbar.pack(side=RIGHT, fill = Y)
 messages = Text(win, wrap = WORD, yscrollcommand = scrollbar.set) 
 messages.see("end")
-messages.insert(INSERT, "Click the Connect button to start chatting\n")
+messages.insert(INSERT, "Click the Connect button to start chatting\n\n")
 messages.configure(state="disabled")
 
 
