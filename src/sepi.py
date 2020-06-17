@@ -79,7 +79,7 @@ def enterPressed():
 	 	  ciphertext = obj.encrypt(sent)
 	 	  client.publish(pubtop, ciphertext)
 	 	  messages.configure(state="normal")
-	 	  messages.insert(INSERT, '%s\n\n' % sent)
+	 	  messages.insert(INSERT, 'Me: %s\n\n' % sent)
 	 	  messages.configure(state="disabled")  
 	 	  messages.see("end")
 
@@ -93,7 +93,7 @@ def Enter_pressed(event):
         ciphertext = obj.encrypt(sent)
         client.publish(pubtop, ciphertext) 
         messages.configure(state="normal")
-        messages.insert(INSERT, '%s\n\n' % sent)   
+        messages.insert(INSERT, 'Me: %s\n\n' % sent)   
         messages.configure(state="disabled")   
         messages.see("end") 
 
@@ -103,7 +103,7 @@ def on_connect(client, userdata, flags, rc):
     global connflag
     global msg
     messages.configure(state="normal")
-    messages.insert(INSERT, "Connected to AWS\n")
+    messages.insert(INSERT, "Connected to AWS\n\n")
     messages.configure(state="disabled")
     # msg2 = Message(win, text="Connected to AWS")
     # print("Connected to AWS")

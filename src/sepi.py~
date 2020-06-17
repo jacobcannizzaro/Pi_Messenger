@@ -79,7 +79,7 @@ def enterPressed():
 	 	  ciphertext = obj.encrypt(sent)
 	 	  client.publish(pubtop, ciphertext)
 	 	  messages.configure(state="normal")
-	 	  messages.insert(INSERT, '%s\n\n' % sent)
+	 	  messages.insert(INSERT, 'Me: %s\n\n' % sent)
 	 	  messages.configure(state="disabled")  
 	 	  messages.see("end")
 
@@ -93,7 +93,7 @@ def Enter_pressed(event):
         ciphertext = obj.encrypt(sent)
         client.publish(pubtop, ciphertext) 
         messages.configure(state="normal")
-        messages.insert(INSERT, '%s\n\n' % sent)   
+        messages.insert(INSERT, 'Me: %s\n\n' % sent)   
         messages.configure(state="disabled")   
         messages.see("end") 
 
@@ -209,8 +209,9 @@ scrollbar=Scrollbar(win)
 scrollbar.pack(side=RIGHT, fill = Y)
 messages = Text(win, wrap = WORD, yscrollcommand = scrollbar.set) 
 messages.see("end")
-messages.configure(state="disabled")
 messages.insert(INSERT, "Click the Connect button to start chatting\n")
+messages.configure(state="disabled")
+
 
 messages.pack()
 scrollbar.config(command=messages.yview)
