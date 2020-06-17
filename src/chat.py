@@ -113,7 +113,7 @@ iThread = threading.Thread(target = pubThread)
 # iThread.daemon = True
 iThread.start()
 
-client.loop_forever()
+client.loop_start()
 
 
 # msg = input("Enter a message: ")
