@@ -20,7 +20,7 @@ input_user = ""
 
 # initialise main window
 def init(win):
-    win.title("SEMPI")
+    win.title("SEMPi")
     win.geometry("415x450")
     win.minsize(415,450)
     

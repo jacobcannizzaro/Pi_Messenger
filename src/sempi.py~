@@ -103,7 +103,7 @@ def Enter_pressed(event):
     strippedString = sent.strip()
     if not strippedString:
     	  input_user.set('')
-	 	  return
+    	  return
     input_user.set('')
     if connflag == True:
         obj = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
