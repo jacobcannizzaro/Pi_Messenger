@@ -81,6 +81,7 @@ def enterPressed():
 	 	  messages.configure(state="normal")
 	 	  messages.insert(INSERT, '%s\n\n' % sent)
 	 	  messages.configure(state="disabled")  
+	 	  messages.see("end")
 
 # button callback     
 def Enter_pressed(event):
@@ -93,7 +94,8 @@ def Enter_pressed(event):
         client.publish(pubtop, ciphertext) 
         messages.configure(state="normal")
         messages.insert(INSERT, '%s\n\n' % sent)   
-        messages.configure(state="disabled")    
+        messages.configure(state="disabled")   
+        messages.see("end") 
 
 
 
@@ -121,6 +123,7 @@ def on_message(client, userdata, message):
         messages.configure(state="normal")
         messages.insert(INSERT, '%s\n\n' % sender_message)
         messages.configure(state="disabled")
+        messages.see("end")
         # print(str(message.topic), ": ", recvmsg, "\n\n> ", end = '')
         
 
@@ -197,11 +200,21 @@ def on_closing():
 
 
 win = Tk()
+btn2 = Button(win, text="Connect", command=popup)
+btn2.pack()
 input_user = StringVar()
 e = Entry(win,text=input_user)
 e.bind("<Return>", Enter_pressed)
-messages = Text(win) 
+scrollbar=Scrollbar(win)
+scrollbar.pack(side=RIGHT, fill = Y)
+messages = Text(win, wrap = WORD, yscrollcommand = scrollbar.set) 
+messages.see("end")
+messages.insert(INSERT, "Click the Connect button to start chatting\n")
 messages.configure(state="disabled")
+
+
+messages.pack()
+scrollbar.config(command=messages.yview)
  
 # Gets the requested values of the height and widht.
 windowWidth = win.winfo_reqwidth()
@@ -216,7 +229,7 @@ win.geometry("+{}+{}".format(positionRight, positionDown))
  
 # create a button
 btnSend = Button(win, text="Send", command=enterPressed)
-btn2 = Button(win, text="Connect", command=popup)
+
 
 
 win.protocol("WM_DELETE_WINDOW", on_closing)

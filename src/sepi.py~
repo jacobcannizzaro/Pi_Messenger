@@ -78,7 +78,10 @@ def enterPressed():
 	 	  obj = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
 	 	  ciphertext = obj.encrypt(sent)
 	 	  client.publish(pubtop, ciphertext)
+	 	  messages.configure(state="normal")
 	 	  messages.insert(INSERT, '%s\n\n' % sent)
+	 	  messages.configure(state="disabled")  
+	 	  messages.see("end")
 
 # button callback     
 def Enter_pressed(event):
@@ -89,9 +92,10 @@ def Enter_pressed(event):
         obj = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
         ciphertext = obj.encrypt(sent)
         client.publish(pubtop, ciphertext) 
-        messages.configure(state="enabled")
+        messages.configure(state="normal")
         messages.insert(INSERT, '%s\n\n' % sent)   
-        messages.configure(state="disabled")    
+        messages.configure(state="disabled")   
+        messages.see("end") 
 
 
 
@@ -116,9 +120,10 @@ def on_message(client, userdata, message):
         recvmsgEncrypted = message.payload
         m = obj2.decrypt(recvmsgEncrypted)
         sender_message = str(message.topic) + ": " + m.decode('utf-8')
-        messages.configure(state="enabled")
+        messages.configure(state="normal")
         messages.insert(INSERT, '%s\n\n' % sender_message)
         messages.configure(state="disabled")
+        messages.see("end")
         # print(str(message.topic), ": ", recvmsg, "\n\n> ", end = '')
         
 
@@ -195,11 +200,20 @@ def on_closing():
 
 
 win = Tk()
+btn2 = Button(win, text="Connect", command=popup)
+btn2.pack()
 input_user = StringVar()
 e = Entry(win,text=input_user)
 e.bind("<Return>", Enter_pressed)
-messages = Text(win) 
+scrollbar=Scrollbar(win)
+scrollbar.pack(side=RIGHT, fill = Y)
+messages = Text(win, wrap = WORD, yscrollcommand = scrollbar.set) 
+messages.see("end")
 messages.configure(state="disabled")
+messages.insert(INSERT, "Click the Connect button to start chatting\n")
+
+messages.pack()
+scrollbar.config(command=messages.yview)
  
 # Gets the requested values of the height and widht.
 windowWidth = win.winfo_reqwidth()
@@ -214,7 +228,7 @@ win.geometry("+{}+{}".format(positionRight, positionDown))
  
 # create a button
 btnSend = Button(win, text="Send", command=enterPressed)
-btn2 = Button(win, text="Connect", command=popup)
+
 
 
 win.protocol("WM_DELETE_WINDOW", on_closing)
