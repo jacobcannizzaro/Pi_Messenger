@@ -78,7 +78,7 @@ def enterPressed():
 	 	  obj = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
 	 	  ciphertext = obj.encrypt(sent)
 	 	  client.publish(pubtop, ciphertext)
-	 	  messages.insert(INSERT, '%s\n' % sent)
+	 	  messages.insert(INSERT, '%s\n\n' % sent)
 
 # button callback     
 def Enter_pressed(event):
@@ -89,7 +89,7 @@ def Enter_pressed(event):
         obj = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
         ciphertext = obj.encrypt(sent)
         client.publish(pubtop, ciphertext) 
-        messages.insert(INSERT, '%s\n' % sent)       
+        messages.insert(INSERT, '%s\n\n' % sent)       
 
 
 
@@ -111,8 +111,8 @@ def on_message(client, userdata, message):
         # recvmsg = str(message.payload.decode("utf-8"))
         recvmsgEncrypted = message.payload
         m = obj2.decrypt(recvmsgEncrypted)
-        sender_message = str(message.topic) + ": " + m.decode('utf-8') + "\n"
-        messages.insert(INSERT, '%s\n' % sender_message)
+        sender_message = str(message.topic) + ": " + m.decode('utf-8')
+        messages.insert(INSERT, '%s\n\n' % sender_message)
         # print(str(message.topic), ": ", recvmsg, "\n\n> ", end = '')
         
 

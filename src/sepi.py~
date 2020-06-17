@@ -11,6 +11,7 @@ from tkinter import messagebox
 from Crypto.Cipher import AES
 
 connflag = False
+clientRunning = False
 pubtop = ""
 subtop = ""
 client = paho.Client()
@@ -110,8 +111,8 @@ def on_message(client, userdata, message):
         # recvmsg = str(message.payload.decode("utf-8"))
         recvmsgEncrypted = message.payload
         m = obj2.decrypt(recvmsgEncrypted)
-        sender_message = str(message.topic) + ": " + m.decode('utf-8') + "\n\n"
-        messages.insert(INSERT, '%s\n' % sender_message)
+        sender_message = str(message.topic) + ": " + m.decode('utf-8')
+        messages.insert(INSERT, '%s\n\n' % sender_message)
         # print(str(message.topic), ": ", recvmsg, "\n\n> ", end = '')
         
 
@@ -168,13 +169,22 @@ def connect_client():
 
     sleep(1)
 
-    client.loop_forever()
+    clientRunning = True
+    client.loop_start()
 
 
 def subThread():
-	 global key 
 	 iThread = threading.Thread(target = connect_client)
 	 iThread.start()
+
+
+def on_closing():
+    global clientRunning
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        if clientRunning == True:
+            clientRunning = False
+            client.loop_stop()
+        win.destroy()
 
 
 
@@ -198,6 +208,11 @@ win.geometry("+{}+{}".format(positionRight, positionDown))
 # create a button
 btnSend = Button(win, text="Send", command=enterPressed)
 btn2 = Button(win, text="Connect", command=popup)
+
+
+win.protocol("WM_DELETE_WINDOW", on_closing)
+
+
 # initialise and start main loop
 init(win)
 
