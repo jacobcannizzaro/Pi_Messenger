@@ -32,6 +32,7 @@ def init(win):
 def popup():
 	 input_user2 = StringVar()
 	 popup = Toplevel()
+	 popup.geometry("+{}+{}".format(positionRight, positionDown))
 	 popup.title("Enter session key")
 	 popup.minsize(400,20)
 	 win.withdraw()
@@ -56,6 +57,7 @@ def handleSessionKey(window, entryField):
 def handleProblem(window):
 	window.withdraw()
 	popup2 = Toplevel()
+	popup2.geometry("+{}+{}".format(positionRight, positionDown))
 	popup2.title("Error!")
 	popup2.minsize(400, 20)
 	l2 = Label(popup2, text = "Please enter a key that is either 16, 24, or 32 characters in length.")
