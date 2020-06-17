@@ -21,7 +21,7 @@ key = ""
 # initialise main window
 def init(win):
     win.title("SEPI Messenger")
-    win.geometry("400x500")
+    win.geometry("415x500")
     #win.minsize(400,500)
    # frame1 = tk.Frame(master = win, width= 500, height = 100, bg="red")
     e.place(bordermode=INSIDE, height=25, width=325, x=0, y=475)
