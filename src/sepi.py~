@@ -45,7 +45,6 @@ def popup():
 def handleSessionKey(window, entryField):
 	 global key
 	 key = str(entryField.get())
-	 print(len(key))
 	 if(len(key) == 16 or len(key) == 24 or len(key) == 32):
 	 	window.destroy()
 	 	btn2.destroy()

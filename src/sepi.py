@@ -180,7 +180,6 @@ def connect_client():
 
 def subThread():
 	 global key 
-	 print(key)
 	 iThread = threading.Thread(target = connect_client)
 	 iThread.start()
 
