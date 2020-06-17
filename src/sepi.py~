@@ -15,20 +15,16 @@ clientRunning = False
 pubtop = ""
 subtop = ""
 client = paho.Client()
-
+e = ""
 key = ""
 
 # initialise main window
 def init(win):
     win.title("SEPI Messenger")
-    win.geometry("420x500")
-    #win.minsize(400,500)
+    win.geometry("415x450")
+    win.minsize(415,450)
    # frame1 = tk.Frame(master = win, width= 500, height = 100, bg="red")
-    e.place(bordermode=INSIDE, height=25, width=325, x=0, y=475)
-    btnSend.place(bordermode=INSIDE, height = 25, width = 75, x = 325, y = 475)
-    btn2.place(bordermode=INSIDE, height=25, width=75, x=0, y=0)
-    btn2.pack()
-    messages.pack()
+    
     
     
 def popup():
@@ -47,11 +43,19 @@ def popup():
 	 
 def handleSessionKey(window, entryField):
 	 global key
+	 global e
+	 global input_user
 	 key = str(entryField.get())
 	 if(len(key) == 16 or len(key) == 24 or len(key) == 32):
 	 	window.destroy()
 	 	btn2.destroy()
 	 	win.deiconify()
+	 	input_user = StringVar()
+	 	e = Entry(win,text=input_user)
+	 	e.bind("<Return>", Enter_pressed)
+	 	e.place(bordermode=INSIDE, height=25, width=325, x=0, y=425)
+	 	btnSend.place(bordermode=INSIDE, height = 25, width = 75, x = 325, y = 425)
+	 	messages.pack()
 	 	subThread()
 	 else:
 	 	handleProblem(window)
@@ -73,6 +77,7 @@ def handleErrorMessage(window1, window2):
 	
 def enterPressed():
 	 global client
+	 global e
 	 sent = e.get()
 	 input_user.set('')
 	 if connflag == True:
@@ -87,6 +92,7 @@ def enterPressed():
 # button callback     
 def Enter_pressed(event):
     global client
+    global e
     sent = e.get()
     input_user.set('')
     if connflag == True:
@@ -203,21 +209,18 @@ def on_closing():
 
 win = Tk()
 btn2 = Button(win, text="Connect", command=popup)
+btn2.place(bordermode=INSIDE, height=25, width=75, x=0, y=0)
 btn2.pack()
-input_user = StringVar()
-e = Entry(win,text=input_user)
-e.bind("<Return>", Enter_pressed)
 scrollbar=Scrollbar(win)
-scrollbar.pack(side=RIGHT, fill = Y)
 messages = Text(win, wrap = WORD, yscrollcommand = scrollbar.set) 
 messages.see("end")
 messages.insert(INSERT, "Click the Connect button to start chatting\n\n")
 messages.configure(state="disabled")
 
-
-
+scrollbar.pack(side=RIGHT, fill = Y)
 messages.pack()
 scrollbar.config(command=messages.yview)
+
  
 # Gets the requested values of the height and widht.
 windowWidth = win.winfo_reqwidth()
