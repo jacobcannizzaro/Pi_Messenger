@@ -110,7 +110,7 @@ def on_message(client, userdata, message):
         # recvmsg = str(message.payload.decode("utf-8"))
         recvmsgEncrypted = message.payload
         m = obj2.decrypt(recvmsgEncrypted)
-        sender_message = str(message.topic) + ": " + m.decode('utf-8') + "\n\n"
+        sender_message = str(message.topic) + ": " + m.decode('utf-8') + "\n"
         messages.insert(INSERT, '%s\n' % sender_message)
         # print(str(message.topic), ": ", recvmsg, "\n\n> ", end = '')
         
