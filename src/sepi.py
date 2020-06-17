@@ -78,7 +78,9 @@ def enterPressed():
 	 	  obj = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
 	 	  ciphertext = obj.encrypt(sent)
 	 	  client.publish(pubtop, ciphertext)
+	 	  messages.configure(state="normal")
 	 	  messages.insert(INSERT, '%s\n\n' % sent)
+	 	  messages.configure(state="disabled")  
 
 # button callback     
 def Enter_pressed(event):
@@ -89,14 +91,18 @@ def Enter_pressed(event):
         obj = AES.new(str(key), AES.MODE_CFB, 's7a6sTM58ZBLiNpR')
         ciphertext = obj.encrypt(sent)
         client.publish(pubtop, ciphertext) 
-        messages.insert(INSERT, '%s\n\n' % sent)       
+        messages.configure(state="normal")
+        messages.insert(INSERT, '%s\n\n' % sent)   
+        messages.configure(state="disabled")    
 
 
 
 def on_connect(client, userdata, flags, rc):
     global connflag
     global msg
+    messages.configure(state="normal")
     messages.insert(INSERT, "Connected to AWS\n")
+    messages.configure(state="disabled")
     # msg2 = Message(win, text="Connected to AWS")
     # print("Connected to AWS")
     connflag = True
@@ -112,7 +118,9 @@ def on_message(client, userdata, message):
         recvmsgEncrypted = message.payload
         m = obj2.decrypt(recvmsgEncrypted)
         sender_message = str(message.topic) + ": " + m.decode('utf-8')
+        messages.configure(state="normal")
         messages.insert(INSERT, '%s\n\n' % sender_message)
+        messages.configure(state="disabled")
         # print(str(message.topic), ": ", recvmsg, "\n\n> ", end = '')
         
 
@@ -193,6 +201,7 @@ input_user = StringVar()
 e = Entry(win,text=input_user)
 e.bind("<Return>", Enter_pressed)
 messages = Text(win) 
+messages.configure(state="disabled")
  
 # Gets the requested values of the height and widht.
 windowWidth = win.winfo_reqwidth()
